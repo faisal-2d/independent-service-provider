@@ -1,31 +1,33 @@
-import React from "react";
-import { Button, Form, Spinner } from "react-bootstrap";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { async } from "@firebase/util";
+import React, { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { useCreateUserWithEmailAndPassword, useSendEmailVerification } from "react-firebase-hooks/auth";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
+import Loading from "../Loading/Loading";
 
 const SignUp = () => {
-
   const [
     createUserWithEmailAndPassword,
     user,
     loading,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth);
+    errorSignUp,
+  ] = useCreateUserWithEmailAndPassword(auth, {sendEmailVerification: true});
+
+
+  
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  if (loading) {
-        return (
-            <div className="text-center my-5">
-                <Spinner animation="border" variant="primary" />
-            </div>
-        );
-      }
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user]); 
 
-  if(user){
-    navigate('/home');
-  }
+ 
 
   const handleFormSubmission = (e) => {
     e.preventDefault();
@@ -33,7 +35,16 @@ const SignUp = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
     createUserWithEmailAndPassword(email, password);
+    console.log('verification sent');
+    console.log(user);
   };
+
+
+
+
+  if (loading) {
+    return <Loading></Loading>
+  }
 
   return (
     <div className="w-25 mx-auto my-5">
@@ -49,7 +60,7 @@ const SignUp = () => {
         </Form.Group>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email address</Form.Label>
-          <Form.Control name="email" type="email" placeholder="Enter email" />
+          <Form.Control name="email" type="email" placeholder="Enter email" required/>
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.
           </Form.Text>
@@ -61,6 +72,7 @@ const SignUp = () => {
             name="password"
             type="password"
             placeholder="Password"
+            required
           />
         </Form.Group>        
         <Button variant="primary" type="submit">
