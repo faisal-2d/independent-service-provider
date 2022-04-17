@@ -1,9 +1,9 @@
 import React from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form , Spinner} from "react-bootstrap";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import auth from "../../firebase.init";
-import Spinner from 'react-bootstrap/Spinner'
+
 
 const LogIn = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
@@ -23,7 +23,8 @@ const LogIn = () => {
 
 
     if(user){
-        navigate(from, { replace: true });        
+        navigate(from, { replace: true }); 
+        return;       
     }
 
   const handleFormSubmission = (e) => {

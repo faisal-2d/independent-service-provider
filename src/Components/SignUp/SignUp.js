@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
@@ -14,6 +14,14 @@ const SignUp = () => {
   ] = useCreateUserWithEmailAndPassword(auth);
 
   const navigate = useNavigate();
+
+  if (loading) {
+        return (
+            <div className="text-center my-5">
+                <Spinner animation="border" variant="primary" />
+            </div>
+        );
+      }
 
   if(user){
     navigate('/home');
