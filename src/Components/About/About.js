@@ -4,7 +4,7 @@ import profilephoto from "../../profilephoto.jpg";
 const About = () => {
   return (
     <div>
-        <h3 className="text center">My goals in 2022</h3>
+        <h3 className="text-center">My goals in 2022</h3>
       <div className="container d-flex align-items-center">
         <div>
           <img className="w-25" src={profilephoto} alt="" />
