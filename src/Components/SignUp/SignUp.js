@@ -1,48 +1,43 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Form } from "react-bootstrap";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useAuthState, useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import auth from "../../firebase.init";
 import Loading from "../Loading/Loading";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Welcome from "../Welcome/Welcome";
 
 const SignUp = () => {
+  const [exisUuser] = useAuthState(auth);
+
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
-
-  useEffect(() => {
-    if (user) {
-      return notify();
-      console.log('notify is not working');
-      // navigate(from, { replace: true });
-    }
-  }, [user]);
-
-  let toastName;
-
+  
   const handleFormSubmission = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
-    toastName = name;
     const email = e.target.email.value;
     const password = e.target.password.value;
     createUserWithEmailAndPassword(email, password);
+    toast( "We sent email to you!");
   };
-
-  const notify = () => toast( "We sent email to you!");
+         
 
   if (loading) {
     return <Loading></Loading>;
   }
 
   return (
-    <div className="w-25 mx-auto my-5">
-      <h3 className="text-center text-primary">Please Sign Up</h3>
+    <div >
+      {exisUuser 
+      ? <div>
+        <Welcome></Welcome>
+        <ToastContainer />
+      </div>
+
+      : <div className="w-25 mx-auto my-5">
+        <h3 className="text-center text-primary">Please Sign Up</h3>
       <Form onSubmit={handleFormSubmission}>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Full Name</Form.Label>
@@ -77,12 +72,14 @@ const SignUp = () => {
         <Button variant="primary" type="submit">
           Sign up
         </Button>
-        <ToastContainer />
       </Form>
 
       <p className="mt-3">
         Already have an account? <Link to="/login">Log in</Link>
       </p>
+      </div>
+      
+      }
     </div>
   );
 };
