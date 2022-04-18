@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
-import { useAuthState, useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useAuthState, useCreateUserWithEmailAndPassword, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import auth from "../../firebase.init";
@@ -9,6 +9,8 @@ import Welcome from "../Welcome/Welcome";
 
 const SignUp = () => {
   const [existUuser] = useAuthState(auth);
+  const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
+
 
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
@@ -73,6 +75,9 @@ const SignUp = () => {
           Sign up
         </Button>
       </Form>
+      <Button variant="primary" onClick={() => signInWithGoogle()} >
+          Sign with google
+        </Button>
 
       <p className="mt-3">
         Already have an account? <Link to="/login">Log in</Link>
