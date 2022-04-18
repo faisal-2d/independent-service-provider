@@ -6,11 +6,11 @@ Welcome to our exclusive tea collecion stall [Raju Tea Stall](https://astounding
 
 ## Technologies used to create this site:
 
-*Firebase
-*React Router
-*react firebase hooks
-*react toastify
-*react bootstrap
+* Firebase
+* React Router
+* react firebase hooks
+* react toastify
+* react bootstrap
 
 
 # Getting Started with Create React App
