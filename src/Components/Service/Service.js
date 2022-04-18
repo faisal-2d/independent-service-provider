@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 const Service = ({ service }) => {
   return (
-    <div className="col-4">
+    <div className="col col-md-4">
       <Card style={{ width: "18rem" }}>
-        <Card.Img variant="top" src={service.img} />
+        <Card.Img className="img-fluid" variant="top" src={service.img} />
         <Card.Body>
           <Card.Title>{service.name}</Card.Title>
           <Card.Text>{service.description}

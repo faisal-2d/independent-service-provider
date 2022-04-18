@@ -8,7 +8,7 @@ import Loading from "../Loading/Loading";
 import Welcome from "../Welcome/Welcome";
 
 const SignUp = () => {
-  const [exisUuser] = useAuthState(auth);
+  const [existUuser] = useAuthState(auth);
 
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
@@ -30,7 +30,7 @@ const SignUp = () => {
 
   return (
     <div >
-      {exisUuser 
+      {existUuser 
       ? <div>
         <Welcome></Welcome>
         <ToastContainer />
