@@ -1,49 +1,43 @@
-import { async } from "@firebase/util";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useCreateUserWithEmailAndPassword, useSendEmailVerification } from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import Loading from "../Loading/Loading";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    errorSignUp,
-  ] = useCreateUserWithEmailAndPassword(auth, {sendEmailVerification: true});
-
-
-  
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  // const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     if (user) {
-      navigate(from, { replace: true });
+      return notify();
+      console.log('notify is not working');
+      // navigate(from, { replace: true });
     }
-  }, [user]); 
+  }, [user]);
 
- 
+  let toastName;
 
   const handleFormSubmission = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
+    toastName = name;
     const email = e.target.email.value;
     const password = e.target.password.value;
     createUserWithEmailAndPassword(email, password);
-    console.log('verification sent');
-    console.log(user);
   };
 
-
-
+  const notify = () => toast( "We sent email to you!");
 
   if (loading) {
-    return <Loading></Loading>
+    return <Loading></Loading>;
   }
 
   return (
@@ -60,7 +54,12 @@ const SignUp = () => {
         </Form.Group>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email address</Form.Label>
-          <Form.Control name="email" type="email" placeholder="Enter email" required/>
+          <Form.Control
+            name="email"
+            type="email"
+            placeholder="Enter email"
+            required
+          />
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.
           </Form.Text>
@@ -74,10 +73,11 @@ const SignUp = () => {
             placeholder="Password"
             required
           />
-        </Form.Group>        
+        </Form.Group>
         <Button variant="primary" type="submit">
           Sign up
         </Button>
+        <ToastContainer />
       </Form>
 
       <p className="mt-3">

@@ -1,15 +1,16 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 import Services from "../Services/Services";
+import './Home.css'
 
 const Home = () => {
   return (
     <div className="mb-5">
-      <div className="mb-5">
+      <div className="mb-5 slider">
         <Carousel>
           <Carousel.Item>
             <img
-              className="d-block w-100"
+              className="d-block w-100 vh-100"
               src="https://images.pexels.com/photos/374852/pexels-photo-374852.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
               alt="First slide"
             />
@@ -20,7 +21,7 @@ const Home = () => {
           </Carousel.Item>
           <Carousel.Item>
             <img
-              className="d-block w-100"
+              className="d-block w-100  vh-100"
               src="https://images.pexels.com/photos/1394841/pexels-photo-1394841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
               alt="Second slide"
             />
@@ -32,7 +33,7 @@ const Home = () => {
           </Carousel.Item>
           <Carousel.Item>
             <img
-              className="d-block w-100"
+              className="d-block w-100 vh-100"
               src="https://images.pexels.com/photos/131044/pexels-photo-131044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
               alt="Third slide"
             />
