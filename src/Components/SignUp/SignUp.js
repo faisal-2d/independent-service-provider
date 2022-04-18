@@ -6,6 +6,8 @@ import { toast, ToastContainer } from "react-toastify";
 import auth from "../../firebase.init";
 import Loading from "../Loading/Loading";
 import Welcome from "../Welcome/Welcome";
+import googleicon from '../../images/google.png';
+
 
 const SignUp = () => {
   const [existUuser] = useAuthState(auth);
@@ -75,9 +77,10 @@ const SignUp = () => {
           Sign up
         </Button>
       </Form>
-      <Button variant="primary" onClick={() => signInWithGoogle()} >
-          Sign with google
-        </Button>
+      <div className="d-flex text-center my-3 google-btn p-2 rounded pe-auto" onClick={() => signInWithGoogle()} >
+         <img className="googleicon" src={googleicon} alt="" /> <span className="ms-2">Sign in with google</span>
+        </div>
+
 
       <p className="mt-3">
         Already have an account? <Link to="/login">Log in</Link>

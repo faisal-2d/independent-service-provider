@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
+import React, {useState, useEffect, useRef } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import auth from "../../firebase.init";
 import Loading from "../Loading/Loading";
+import googleicon from '../../images/google.png';
+import './Login.css'
 
 const LogIn = () => {
+  const emailRef = useRef('');
+  const passwordRef = useRef('');
   const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
 
   const [signInWithEmailAndPassword, user, loading, error] =
@@ -26,12 +31,24 @@ const LogIn = () => {
     }
   }, [user,googleUser]);
 
+  
   const handleFormSubmission = (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
     signInWithEmailAndPassword(email, password);
   };
+
+  const resetPassword = async () => {
+    const email = emailRef.current.value;
+    if (email) {
+        await sendPasswordResetEmail(email);
+        toast('Password reset mail Sent!');
+    }
+    else{
+        toast('please enter your email address');
+    }
+}
 
 
   if (loading || sending) {
@@ -45,12 +62,13 @@ const LogIn = () => {
       <Form onSubmit={handleFormSubmission}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control name="email" type="email" placeholder="Enter email" required />
+          <Form.Control ref={emailRef} name="email" type="email" placeholder="Enter email" required />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
+            ref={passwordRef}
             name="password"
             type="password"
             placeholder="Password"
@@ -60,18 +78,19 @@ const LogIn = () => {
           Log in
         </Button>       
       </Form>
-      <Button variant="primary" onClick={() => signInWithGoogle()} >
-          Sign with google
-        </Button>
+      <div className="d-flex text-center my-3 google-btn p-2 rounded pe-auto" onClick={() => signInWithGoogle()} >
+         <img className="googleicon" src={googleicon} alt="" /> <span className="ms-2">Sign in with google</span>
+        </div>
 
       <p className="mt-3">
-        Forgot password? <button className="btn btn-link text-white">Reset password</button>
+        Forgot password? <button  onClick={resetPassword} className="btn btn-link text-danger">Reset password</button>
       </p>
 
       
       <p className="mt-3">
         New to Raju Tea Stall? <Link to="/signup">Sign Up</Link>
       </p>
+      <ToastContainer />
     </div>
   );
 };
